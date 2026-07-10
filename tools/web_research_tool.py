@@ -2,7 +2,10 @@ from duckduckgo_search import DDGS
 
 from crewai.tools import tool
 
-from tools.stock_research_tool import _NAME_TO_TICKER
+from tools.stock_research_tool import _US_NAME_TO_TICKER, _INDIA_NAME_TO_TICKER
+
+# Merged lookup: Indian names take priority (more specific)
+_NAME_TO_TICKER = {**_US_NAME_TO_TICKER, **_INDIA_NAME_TO_TICKER}
 
 
 def _company_label(stock: str) -> str:
@@ -10,6 +13,7 @@ def _company_label(stock: str) -> str:
     if symbol in _NAME_TO_TICKER:
         return f"{symbol} ({_NAME_TO_TICKER[symbol]})"
     return symbol
+
 
 
 @tool("Stock News Search Tool")

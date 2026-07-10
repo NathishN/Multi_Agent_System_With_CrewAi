@@ -21,28 +21,36 @@
         <span class="ticker-item bull">AAPL +1.23%</span>
         <span class="ticker-item bear">TSLA -2.45%</span>
         <span class="ticker-item bull">NVDA +4.17%</span>
+        <span class="ticker-item bull">TCS.NS +0.85%</span>
         <span class="ticker-item bear">AMZN -0.89%</span>
         <span class="ticker-item bull">MSFT +0.64%</span>
+        <span class="ticker-item bull">RELIANCE.NS +1.32%</span>
         <span class="ticker-item bull">GOOGL +1.88%</span>
         <span class="ticker-item bear">META -1.12%</span>
-        <span class="ticker-item bull">BRK.B +0.33%</span>
+        <span class="ticker-item bull">INFY.NS +2.10%</span>
         <span class="ticker-item bull">JPM +2.05%</span>
-        <span class="ticker-item bear">NFLX -0.76%</span>
+        <span class="ticker-item bear">HDFCBANK.NS -0.43%</span>
         <span class="ticker-item bull">AMD +3.41%</span>
-        <span class="ticker-item bear">INTC -1.59%</span>
+        <span class="ticker-item bear">WIPRO.NS -0.76%</span>
+        <span class="ticker-item bull">ICICIBANK.NS +1.54%</span>
+        <span class="ticker-item bear">NFLX -0.76%</span>
         <!-- Duplicated for seamless loop -->
         <span class="ticker-item bull">AAPL +1.23%</span>
         <span class="ticker-item bear">TSLA -2.45%</span>
         <span class="ticker-item bull">NVDA +4.17%</span>
+        <span class="ticker-item bull">TCS.NS +0.85%</span>
         <span class="ticker-item bear">AMZN -0.89%</span>
         <span class="ticker-item bull">MSFT +0.64%</span>
+        <span class="ticker-item bull">RELIANCE.NS +1.32%</span>
         <span class="ticker-item bull">GOOGL +1.88%</span>
         <span class="ticker-item bear">META -1.12%</span>
-        <span class="ticker-item bull">BRK.B +0.33%</span>
+        <span class="ticker-item bull">INFY.NS +2.10%</span>
         <span class="ticker-item bull">JPM +2.05%</span>
-        <span class="ticker-item bear">NFLX -0.76%</span>
+        <span class="ticker-item bear">HDFCBANK.NS -0.43%</span>
         <span class="ticker-item bull">AMD +3.41%</span>
-        <span class="ticker-item bear">INTC -1.59%</span>
+        <span class="ticker-item bear">WIPRO.NS -0.76%</span>
+        <span class="ticker-item bull">ICICIBANK.NS +1.54%</span>
+        <span class="ticker-item bear">NFLX -0.76%</span>
       </div>
     </div>
 
@@ -103,6 +111,21 @@
       <!-- Main card -->
       <main class="card" id="main-card">
         <form id="analyze-form" class="form" novalidate>
+          <!-- Market Toggle -->
+          <div class="market-toggle-row">
+            <span class="market-toggle-label">Market</span>
+            <div class="market-toggle" id="market-toggle" role="group" aria-label="Select market">
+              <button type="button" class="market-btn active" id="market-us" data-market="US" aria-pressed="true">
+                <span class="market-flag">🇺🇸</span>
+                <span>US</span>
+              </button>
+              <button type="button" class="market-btn" id="market-india" data-market="India" aria-pressed="false">
+                <span class="market-flag">🇮🇳</span>
+                <span>India</span>
+              </button>
+            </div>
+          </div>
+
           <label for="stock-input" class="form-label">Stock Symbol or Company Name</label>
           <div class="input-row">
             <div class="input-wrapper">
@@ -129,8 +152,8 @@
             </button>
           </div>
 
-          <!-- Quick-pick chips -->
-          <div class="chips-row" role="group" aria-label="Quick pick stocks">
+          <!-- US Quick-pick chips -->
+          <div class="chips-row" id="chips-us" role="group" aria-label="Quick pick US stocks">
             <span class="chips-label">Try:</span>
             <button type="button" class="chip" data-stock="AAPL">AAPL</button>
             <button type="button" class="chip" data-stock="TSLA">TSLA</button>
@@ -139,8 +162,27 @@
             <button type="button" class="chip" data-stock="GOOGL">GOOGL</button>
           </div>
 
+          <!-- India Quick-pick chips (hidden by default) -->
+          <div class="chips-row hidden" id="chips-india" role="group" aria-label="Quick pick Indian stocks">
+            <span class="chips-label">Try:</span>
+            <button type="button" class="chip chip-india" data-stock="TCS">TCS</button>
+            <button type="button" class="chip chip-india" data-stock="RELIANCE">RELIANCE</button>
+            <button type="button" class="chip chip-india" data-stock="INFY">INFY</button>
+            <button type="button" class="chip chip-india" data-stock="HDFCBANK">HDFCBANK</button>
+            <button type="button" class="chip chip-india" data-stock="WIPRO">WIPRO</button>
+          </div>
+
           <p class="hint">⏱ Analysis takes 1–3 minutes while agents run in parallel.</p>
         </form>
+
+        <!-- Live Data Banner -->
+        <div id="live-data-banner" class="live-data hidden" aria-live="polite">
+          <div class="live-data-content">
+            <div class="live-ticker" id="live-ticker">AAPL</div>
+            <div class="live-price" id="live-price">$150.00</div>
+            <div class="live-change" id="live-change">+1.50 (+1.00%)</div>
+          </div>
+        </div>
 
         <!-- Error -->
         <div id="error-box" class="error-box hidden" role="alert" aria-live="polite"></div>
@@ -230,6 +272,21 @@
           <div class="disclaimer">
             ⚠️ For educational purposes only — not financial advice.
           </div>
+
+          <!-- Paper Trade CTA -->
+          <div class="paper-trade-cta" id="paper-trade-cta">
+            <div class="ptc-left">
+              <span class="ptc-icon" id="ptc-icon">📈</span>
+              <div>
+                <p class="ptc-title">Paper Trade this Signal</p>
+                <p class="ptc-sub">Simulate trading based on the AI recommendation</p>
+              </div>
+            </div>
+            <button type="button" class="btn-paper-trade" id="btn-paper-trade" aria-label="Open paper trade dialog">
+              <span>Trade</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
         </section>
       </main>
 
@@ -244,10 +301,191 @@
         </div>
       </section>
 
+      <!-- ══════════════════════════════════════════
+           PORTFOLIO DASHBOARD
+      ══════════════════════════════════════════ -->
+      <section class="portfolio-section" id="portfolio-section" aria-label="Paper trading portfolio">
+
+        <!-- Header -->
+        <div class="portfolio-header">
+          <div class="portfolio-title-row">
+            <div class="portfolio-icon">📊</div>
+            <div>
+              <h2 class="portfolio-title">Paper Portfolio</h2>
+              <p class="portfolio-sub">Simulated trading based on AI signals</p>
+            </div>
+          </div>
+          <div class="portfolio-actions">
+            <button type="button" class="btn-refresh-portfolio" id="btn-refresh-portfolio" title="Refresh live prices" aria-label="Refresh portfolio prices">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4"/></svg>
+              Refresh
+            </button>
+            <button type="button" class="btn-reset-portfolio" id="btn-reset-portfolio" aria-label="Reset portfolio">Reset</button>
+          </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="portfolio-stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">💵 Cash</span>
+            <span class="stat-value" id="stat-cash">$10,000.00</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">📦 Invested</span>
+            <span class="stat-value" id="stat-invested">$0.00</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">📈 Total P&amp;L</span>
+            <span class="stat-value" id="stat-pnl">$0.00</span>
+          </div>
+          <div class="stat-card winrate-stat">
+            <span class="stat-label">🏆 Win Rate</span>
+            <span class="stat-value" id="stat-winrate">—</span>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="portfolio-tabs" role="tablist" aria-label="Portfolio views">
+          <button type="button" class="ptab active" id="tab-positions" role="tab" aria-selected="true" aria-controls="panel-positions">Open Positions</button>
+          <button type="button" class="ptab" id="tab-winrate" role="tab" aria-selected="false" aria-controls="panel-winrate">AI Win Rate</button>
+          <button type="button" class="ptab" id="tab-history" role="tab" aria-selected="false" aria-controls="panel-history">Trade History</button>
+        </div>
+
+        <!-- Panel: Open Positions -->
+        <div id="panel-positions" role="tabpanel" aria-labelledby="tab-positions">
+          <div id="positions-empty" class="portfolio-empty">
+            <span class="empty-icon">📭</span>
+            <p>No open positions. Run an analysis and click <strong>Trade</strong> to paper trade.</p>
+          </div>
+          <div class="positions-table-wrap hidden" id="positions-table-wrap">
+            <table class="positions-table" aria-label="Open positions">
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Direction</th>
+                  <th>Qty</th>
+                  <th>Entry</th>
+                  <th>Current</th>
+                  <th>Unreal. P&amp;L</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="positions-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Panel: AI Win Rate -->
+        <div id="panel-winrate" role="tabpanel" aria-labelledby="tab-winrate" class="hidden">
+          <div id="winrate-empty" class="portfolio-empty">
+            <span class="empty-icon">🏁</span>
+            <p>No closed trades yet. Close a position to start tracking the AI's accuracy.</p>
+          </div>
+          <div class="winrate-board hidden" id="winrate-board">
+            <div class="winrate-overall">
+              <div class="winrate-circle" id="winrate-circle">
+                <svg viewBox="0 0 36 36" class="winrate-donut" aria-hidden="true">
+                  <circle class="donut-track" cx="18" cy="18" r="15.915" fill="none" stroke-width="3"/>
+                  <circle class="donut-fill" id="donut-fill" cx="18" cy="18" r="15.915" fill="none" stroke-width="3"
+                    stroke-dasharray="0 100" stroke-dashoffset="25"/>
+                </svg>
+                <div class="winrate-circle-inner">
+                  <span class="winrate-pct" id="winrate-pct">0%</span>
+                  <span class="winrate-lbl">AI Accuracy</span>
+                </div>
+              </div>
+              <div class="winrate-legend">
+                <div class="wrl-row">
+                  <span class="wrl-dot buy"></span>
+                  <span class="wrl-label">Buy Signals</span>
+                  <span class="wrl-val" id="wr-buy">0W / 0L</span>
+                </div>
+                <div class="wrl-row">
+                  <span class="wrl-dot sell"></span>
+                  <span class="wrl-label">Sell Signals</span>
+                  <span class="wrl-val" id="wr-sell">0W / 0L</span>
+                </div>
+                <div class="wrl-row">
+                  <span class="wrl-dot hold"></span>
+                  <span class="wrl-label">Hold Signals</span>
+                  <span class="wrl-val" id="wr-hold">0W / 0L</span>
+                </div>
+              </div>
+            </div>
+            <div class="winrate-bars" id="winrate-bars"></div>
+          </div>
+        </div>
+
+        <!-- Panel: Trade History -->
+        <div id="panel-history" role="tabpanel" aria-labelledby="tab-history" class="hidden">
+          <div id="trade-history-empty" class="portfolio-empty">
+            <span class="empty-icon">📜</span>
+            <p>No closed trades yet.</p>
+          </div>
+          <div class="trade-log-wrap hidden" id="trade-log-wrap">
+            <div class="trade-log" id="trade-log" role="list"></div>
+          </div>
+        </div>
+
+      </section>
+
       <footer class="footer">
         <p>Built with <span class="heart">♥</span> using <strong>CrewAI</strong> · <strong>FastAPI</strong> · <strong>LLaMA 3.3</strong></p>
         <p class="footer-sub">For educational purposes only — not financial advice.</p>
       </footer>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         TRADE MODAL
+    ══════════════════════════════════════ -->
+    <div class="modal-overlay hidden" id="trade-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-title">Paper Trade</h3>
+          <button type="button" class="modal-close" id="modal-close" aria-label="Close modal">✕</button>
+        </div>
+
+        <div class="modal-stock-info">
+          <div class="modal-ticker" id="modal-ticker">—</div>
+          <div class="modal-price-wrap">
+            <span class="modal-price-label">Entry Price</span>
+            <span class="modal-price" id="modal-price">—</span>
+          </div>
+        </div>
+
+        <div class="modal-direction-row">
+          <span class="modal-dir-label">Direction</span>
+          <div class="modal-dir-btns" id="modal-dir-btns" role="group" aria-label="Trade direction">
+            <button type="button" class="dir-btn buy active" id="dir-buy" data-dir="buy">📈 Buy (Long)</button>
+            <button type="button" class="dir-btn sell" id="dir-sell" data-dir="sell">📉 Sell (Short)</button>
+          </div>
+        </div>
+
+        <div class="modal-qty-row">
+          <label for="modal-qty" class="modal-qty-label">Quantity (shares)</label>
+          <div class="modal-qty-controls">
+            <button type="button" class="qty-btn" id="qty-dec" aria-label="Decrease quantity">−</button>
+            <input type="number" id="modal-qty" min="1" max="1000" value="1" class="modal-qty-input" />
+            <button type="button" class="qty-btn" id="qty-inc" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
+
+        <div class="modal-cost-row">
+          <span class="modal-cost-label">Total Cost</span>
+          <span class="modal-cost" id="modal-cost">—</span>
+        </div>
+        <div class="modal-cash-row">
+          <span class="modal-cost-label">Available Cash</span>
+          <span class="modal-cash-avail" id="modal-cash-avail">—</span>
+        </div>
+
+        <div class="modal-error hidden" id="modal-error"></div>
+
+        <div class="modal-actions">
+          <button type="button" class="modal-cancel" id="modal-cancel">Cancel</button>
+          <button type="button" class="modal-confirm" id="modal-confirm">Confirm Trade</button>
+        </div>
+      </div>
     </div>
 
     <script src="js/app.js"></script>

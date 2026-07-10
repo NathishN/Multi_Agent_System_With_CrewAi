@@ -19,7 +19,7 @@ app.add_middleware(
 
 
 class StockRequest(BaseModel):
-    stock: str = Field(..., min_length=1, max_length=64, examples=["AAPL"])
+    stock: str = Field(..., min_length=1, max_length=64, examples=["AAPL", "TCS.NS", "RELIANCE"])
 
 
 class StockResponse(BaseModel):
@@ -31,6 +31,38 @@ class StockResponse(BaseModel):
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
+
+
+import yfinance as yf
+from tools.stock_research_tool import _resolve_ticker, _detect_market
+
+@app.get("/api/stock-data/{ticker}")
+def get_stock_data(ticker: str):
+    try:
+        resolved_ticker = _resolve_ticker(ticker)
+        stock = yf.Ticker(resolved_ticker)
+        info = stock.info
+        current_price = info.get("regularMarketPrice") or info.get("currentPrice")
+        
+        if current_price is None:
+            return {"error": "Could not fetch data for this ticker."}
+            
+        change = info.get("regularMarketChange")
+        change_percent = info.get("regularMarketChangePercent")
+        market = _detect_market(resolved_ticker)
+        currency = info.get("currency", "INR" if market == "India" else "USD")
+        
+        return {
+            "price": current_price,
+            "change": change,
+            "changePercent": change_percent * 100 if change_percent else 0,
+            "currency": currency,
+            "market": market,
+            "volume": info.get("regularMarketVolume") or info.get("volume"),
+            "resolvedTicker": resolved_ticker
+        }
+    except Exception as e:
+        return {"error": str(e)}
 
 
 @app.post("/api/analyze", response_model=StockResponse)

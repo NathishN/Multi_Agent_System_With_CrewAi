@@ -18,6 +18,8 @@ trade_decision = Task(
         "Cite specific price, volume, risk level from the market briefing and "
         "headlines/sentiment from the news brief. Explain how both sources support the decision.\n"
         "\n"
+        "Tactical Suggestion: Provide a brief tactical suggestion on how to execute the trade (e.g., entry price, stop loss, or execution strategy).\n"
+        "\n"
         "Decision must be exactly one word: Buy, Sell, or Hold."
     ),
     agent=trader_agent,
