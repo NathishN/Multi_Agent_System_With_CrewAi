@@ -76,3 +76,15 @@ def analyze(request: StockRequest):
             status_code=500,
             detail=f"Analysis failed: {exc}",
         ) from exc
+
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
+
+# Serve the static files from the frontend directory
+app.mount("/css", StaticFiles(directory="frontend/css"), name="css")
+app.mount("/js", StaticFiles(directory="frontend/js"), name="js")
+
+@app.get("/")
+def serve_frontend():
+    return FileResponse(os.path.join("frontend", "index.html"))
