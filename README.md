@@ -51,10 +51,20 @@ StockMind AI uses a collaborative crew of four specialised AI agents to analyse 
 - **4-agent reasoning pipeline** — Analyst, Risk Reviewer, Research, and Trader agents collaborate sequentially
 - **Live market data** — Real-time price, volume, and day range via `yfinance`
 - **Real-time news search** — Latest headlines and sentiment via DuckDuckGo
+- **Paper Portfolio Management** — Simulate trades and track performance of an imaginary portfolio without risking real money
 - **Natural language input** — Accepts full company names (`APPLE`, `TESLA`) or ticker symbols (`AAPL`, `TSLA`)
 - **Professional web UI** — Dark-theme SPA with animated agent pipeline, decision badges, and analysis history
 - **REST API** — Clean FastAPI backend with automatic OpenAPI docs
 - **One-command deployment** — Docker Compose runs the full stack with a single command
+
+---
+
+## Pros of this Project
+
+- **Comprehensive Analysis** — Combines quantitative market data with qualitative news sentiment.
+- **Risk Averse** — A dedicated Risk Reviewer validates data to prevent hallucination or rash decisions.
+- **Zero Financial Risk** — Can be integrated into a paper portfolio to test strategies safely.
+- **Extensible Architecture** — Built with FastAPI and CrewAI, making it trivial to add new agents or data sources.
 
 ---
 
