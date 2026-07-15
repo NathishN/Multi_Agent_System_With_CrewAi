@@ -15,6 +15,7 @@ COPY agents/ ./agents/
 COPY tasks/ ./tasks/
 COPY tools/ ./tools/
 COPY api/ ./api/
+COPY frontend/ ./frontend/
 
 EXPOSE 8000
 
